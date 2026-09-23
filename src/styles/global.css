@@ -38,7 +38,10 @@ body.is-swapping [data-i18n]{opacity:0}
 .brand{white-space:nowrap;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em;margin-right:auto;min-height:44px;display:inline-flex;align-items:center}
 .nav ul{list-style:none;margin:0;padding:0;display:flex;gap:2px}
 .nav a{white-space:nowrap;display:inline-flex;align-items:center;min-height:44px;padding:0 10px;color:var(--muted);text-decoration:none;font-size:.9375rem;border-radius:8px;transition:color .2s}
-.nav a:hover{color:var(--ink)}
+.nav a{position:relative}
+.nav a:hover,.nav a[aria-current="location"]{color:var(--ink)}
+.nav a::after{content:"";position:absolute;left:10px;right:10px;bottom:7px;height:2px;border-radius:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+.nav a[aria-current="location"]::after{transform:scaleX(1)}
 .controls{display:flex;align-items:center;gap:6px}
 .lang{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;padding:2px}
 .lang button{font:inherit;font-family:var(--font-mono);font-size:.8125rem;min-width:40px;min-height:36px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer;transition:background-color .25s,color .25s}
@@ -170,7 +173,8 @@ body.is-swapping [data-i18n]{opacity:0}
 
 /* Contacto */
 .email{display:inline-block;font-size:clamp(1.5rem,5vw,3.1rem);font-weight:650;letter-spacing:-.03em;line-height:1.15;color:var(--ink);text-decoration:none;overflow-wrap:anywhere;background-image:linear-gradient(var(--accent),var(--accent));background-size:0% 3px;background-position:0 100%;background-repeat:no-repeat;padding-bottom:6px;transition:background-size .5s var(--ease)}
-.email:hover,.email:focus-visible{background-size:100% 3px}
+.email:hover,.email:focus-visible,.email.is-in{background-size:100% 3px}
+.email.is-in{transition-delay:.35s}
 .contact-lead{color:var(--muted);margin-bottom:1rem}
 .contact-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:2rem}
 .contact-meta{margin-top:1.5rem;font-family:var(--font-mono);font-size:.8125rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
@@ -182,5 +186,25 @@ body.is-swapping [data-i18n]{opacity:0}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
+  .reveal-ready [data-reveal]{opacity:1!important}
+  .timeline::before{transform:none!important}
+  .email.is-in{transition-delay:0s}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
 }
+
+/* ============ Animaciones de scroll ============
+   Solo transform/opacity. Se aplican con .reveal-ready (lo agrega el JS), así que sin JS todo se ve.
+   Es una animación (no transición) con fill "backwards": al terminar devuelve el control del
+   transform a las tarjetas (tilt) y el estado final vive en el CSS base. */
+.reveal-ready [data-reveal]{opacity:0}
+.reveal-ready [data-reveal].is-in{opacity:1;animation:scroll-in .8s var(--ease) backwards;animation-delay:calc(var(--i,0)*80ms)}
+.reveal-ready [data-reveal="chip"]{--dy:10px}
+.reveal-ready [data-reveal="chip"].is-in{animation-duration:.55s;animation-delay:calc(var(--i,0)*45ms)}
+@keyframes scroll-in{from{opacity:0;transform:translateY(var(--dy,24px))}}
+
+/* Línea de tiempo: la línea se dibuja al bajar */
+.reveal-ready .timeline::before{transform:scaleY(0);transform-origin:top;transition:transform 1.3s var(--ease)}
+.reveal-ready .timeline.is-in::before{transform:scaleY(1)}
+
+/* Barra de progreso de lectura */
+.progress{position:fixed;left:0;top:0;right:0;height:3px;z-index:40;background:var(--accent);transform:scaleX(var(--p,0));transform-origin:left;pointer-events:none}

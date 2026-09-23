@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useI18n, type Lang } from '../i18n';
 import { useTheme } from '../hooks/useTheme';
+import { useActiveSection } from '../hooks/useScrollFx';
 
 const NAV = [
   ['sobre-mi', 'nav.about'],
@@ -10,11 +11,13 @@ const NAV = [
   ['formacion', 'nav.education'],
   ['contacto', 'nav.contact'],
 ] as const;
+const NAV_IDS = NAV.map(([id]) => id);
 
 export function Header() {
   const { t, lang, setLang } = useI18n();
   const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
+  const active = useActiveSection(NAV_IDS);
 
   useEffect(() => {
     if (!open) return;
@@ -38,7 +41,7 @@ export function Header() {
         <nav className={`nav${open ? ' is-open' : ''}`} id="site-nav" aria-label={t('nav.label')} onClick={(e) => { if ((e.target as HTMLElement).closest('a')) setOpen(false); }}>
           <ul>
             {NAV.map(([id, k]) => (
-              <li key={id}><a href={`#${id}`} data-i18n="">{t(k)}</a></li>
+              <li key={id}><a href={`#${id}`} data-i18n="" aria-current={active === id ? 'location' : undefined}>{t(k)}</a></li>
             ))}
           </ul>
         </nav>
