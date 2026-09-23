@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useI18n, type Key } from '../i18n';
 import { useTilt } from '../hooks/useTilt';
 import { rv } from '../hooks/useScrollFx';
+import { RepoDemo } from './RepoDemo';
 
 const EMAIL = 'joaquinguerrero256@gmail.com';
 const LINKEDIN = 'https://www.linkedin.com/in/joaquinguerrero256';
@@ -57,7 +58,10 @@ export function Projects() {
               <p className="tech-label" data-i18n="">{t('tech')}</p>
               <TechList items={['Vue 3', 'Quasar', 'TypeScript', 'Service Workers', 'IndexedDB']} />
             </div>
-            {feats(['p1.f1', 'p1.f2', 'p1.f3', 'p1.f4', 'p1.f5'])}
+            <div>
+              <RepoDemo />
+              {feats(['p1.f1', 'p1.f2', 'p1.f3', 'p1.f4', 'p1.f5'])}
+            </div>
           </div>
         </Card>
 

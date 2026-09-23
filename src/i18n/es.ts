@@ -34,6 +34,7 @@ const es = {
  'edu.d1':'jul 2023 – jul 2025','edu.t1':'Tecnicatura en Programación','edu.t2':'Cursos en Coderhouse','edu.c2':'Desarrollo Web, Python, JavaScript',
  'edu.langs':'Idiomas','edu.langsVal':'Español nativo · Inglés básico (mejorándolo)',
  'contact.lead':'Escribime por email o por LinkedIn.','contact.cv':'Descargar CV','contact.copy':'Copiar email','contact.copied':'Email copiado',
- 'newTab':' (se abre en una pestaña nueva)','backTop':'Volver arriba'
+ 'newTab':' (se abre en una pestaña nueva)','backTop':'Volver arriba',
+ 'mini.repoOn':'En línea: el repositorio usa la API.','mini.repoOff':'Sin conexión: el repositorio usa IndexedDB.'
 } as const;
 export default es;

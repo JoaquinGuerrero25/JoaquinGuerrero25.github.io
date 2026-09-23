@@ -36,6 +36,7 @@ const en: Record<keyof typeof es, string> = {
  'edu.d1':'Jul 2023 – Jul 2025','edu.t1':'Programming Technician (associate degree)','edu.t2':'Courses at Coderhouse','edu.c2':'Web Development, Python, JavaScript',
  'edu.langs':'Languages','edu.langsVal':'Spanish: native · English: basic (improving)',
  'contact.lead':'Send me an email or a message on LinkedIn.','contact.cv':'Download CV','contact.copy':'Copy email','contact.copied':'Email copied',
- 'newTab':' (opens in a new tab)','backTop':'Back to top'
+ 'newTab':' (opens in a new tab)','backTop':'Back to top',
+ 'mini.repoOn':'Online: the repository uses the API.','mini.repoOff':'Offline: the repository uses IndexedDB.'
 };
 export default en;

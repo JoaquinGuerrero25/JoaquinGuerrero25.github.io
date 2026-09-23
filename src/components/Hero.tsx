@@ -1,29 +1,17 @@
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useI18n, prefersReducedMotion } from '../i18n';
-import { SyncStore } from '../scene/sync';
+import { useSync, useSyncState } from '../scene/SyncContext';
+import { canRender3D } from '../scene/support';
 
 const delay = (d: string) => ({ '--d': d }) as CSSProperties;
-
-function webglOK() {
-  try {
-    const c = document.createElement('canvas');
-    return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
-  } catch {
-    return false;
-  }
-}
-function weakDevice() {
-  const n = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
-  return !!((n.deviceMemory && n.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || n.connection?.saveData);
-}
 
 type Mode = 'loading' | '3d' | 'fallback';
 
 export function Hero() {
   const { t } = useI18n();
-  const sync = useMemo(() => new SyncStore(), []);
-  const state = useSyncExternalStore(sync.subscribe, sync.getSnapshot);
-  const [mode, setMode] = useState<Mode>(() => (!webglOK() || weakDevice() ? 'fallback' : 'loading'));
+  const sync = useSync();
+  const state = useSyncState();
+  const [mode, setMode] = useState<Mode>(() => (canRender3D() ? 'loading' : 'fallback'));
   const [live, setLive] = useState('');
 
   const heroRef = useRef<HTMLElement>(null);
@@ -32,10 +20,10 @@ export function Hero() {
   const lblLocal = useRef<HTMLDivElement>(null);
   const lblServer = useRef<HTMLDivElement>(null);
 
+  // Sin 3D (sin WebGL o equipo débil) también se ocultan las mini escenas.
   useEffect(() => {
-    sync.reduced = prefersReducedMotion();
-    return () => sync.dispose();
-  }, [sync]);
+    document.documentElement.classList.toggle('no-3d', mode === 'fallback');
+  }, [mode]);
 
   // El 3D y el tráfico solo corren mientras el hero es visible.
   useEffect(() => {

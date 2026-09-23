@@ -1,5 +1,6 @@
 import * as T from 'three';
 import type { SyncStore } from './sync';
+import { PALETTE, CK, type PaletteKey } from './palette';
 
 export interface SceneOptions {
   canvas: HTMLCanvasElement;
@@ -11,16 +12,6 @@ export interface SceneOptions {
   reduced: boolean;
   onContextLost: () => void;
 }
-
-type PaletteKey = 'body' | 'db' | 'edge' | 'ui' | 'accent' | 'line' | 'dim' | 'sky' | 'ground';
-type Palette = Record<PaletteKey, number> & { hemiI: number; keyI: number };
-
-/* PALETA DE LA ESCENA — debe acompañar a los colores CSS (src/styles/global.css) */
-const PALETTE: Record<'light' | 'dark', Palette> = {
-  light: { body: 0xffffff, db: 0xe9ecf2, edge: 0x1a1d23, ui: 0xc6ccd6, accent: 0x2447d8, line: 0x1a1d23, dim: 0xaab0bb, sky: 0xffffff, ground: 0xcdd2db, hemiI: 0.9, keyI: 0.5 },
-  dark: { body: 0x252a33, db: 0x2d333e, edge: 0xc4cad6, ui: 0x3d4450, accent: 0x8ea8ff, line: 0xc4cad6, dim: 0x4d5461, sky: 0xa0acc6, ground: 0x0e1014, hemiI: 0.8, keyI: 0.45 },
-};
-const CK: PaletteKey[] = ['body', 'db', 'edge', 'ui', 'accent', 'line', 'dim', 'sky', 'ground'];
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const ease = (x: number) => 1 - Math.pow(1 - x, 3);
